@@ -1,0 +1,24 @@
+[2022-03-01 12:32:36] - ERROR - error in CreateQuantResult
+[2022-03-01 12:34:14] - ERROR - error in CreateQuantResult: (Unauthorized) not authorized on economicus to execute command { insert: "quant_results", ordered: true, lsid: { id: UUID("84deaf7c-e360-41d3-b91b-3ccef2ff246a") }, $db: "economicus" }
+[2022-03-01 12:40:42] - ERROR - error in CreateQuantResult: (Unauthorized) not authorized on economicus to execute command { insert: "quant_results", ordered: true, lsid: { id: UUID("8d9da80b-f2d2-4499-9ffa-74d5b8b102ab") }, $db: "economicus" }
+[2022-03-01 13:54:24] - ERROR - error in CreateQuantResult: connection() error occured during connection handshake: auth error: sasl conversation error: unable to authenticate using mechanism "SCRAM-SHA-1": (AuthenticationFailed) Authentication failed.
+[2022-03-01 14:03:18] - ERROR - error in UpdateQuant: sql: converting argument $1 type: unsupported type primitive.ObjectID, a array
+
+[2022-03-04 17:38:37] - ERROR - error in CreateQuantOption: unsupported data type: &[]: Table not set, please set it like: db.Model(&user) or db.Table("users")
+
+[2022-03-04 17:42:31] - ERROR - error in CreateQuantOption: unsupported data type: &[]: Table not set, please set it like: db.Model(&user) or db.Table("users")
+
+[2022-03-04 17:46:25] - ERROR - error in CreateQuantOption: unsupported data type: &[]: Table not set, please set it like: db.Model(&user) or db.Table("users")
+
+[2022-03-04 17:53:13] - ERROR - error in CreateQuantOption: Error 1452: Cannot add or update a child row: a foreign key constraint fails (`economicus`.`quant_options`, CONSTRAINT `fk_quants_quant_option` FOREIGN KEY (`quant_id`) REFERENCES `quants` (`id`) ON DELETE CASCADE)
+
+[2022-03-04 17:55:01] - ERROR - error in CreateQuantOption: Error 1452: Cannot add or update a child row: a foreign key constraint fails (`economicus`.`quant_options`, CONSTRAINT `fk_quants_quant_option` FOREIGN KEY (`quant_id`) REFERENCES `quants` (`id`) ON DELETE CASCADE)
+
+[2022-03-04 17:56:55] - ERROR - error in UpdateQuant: Error 1054: Unknown column 'data_id' in 'field list'
+
+[2022-03-04 19:08:25] - ERROR - error in UpdateQuant: sql: converting argument $2 type: unsupported type response.ChartData, a struct
+
+[2022-03-04 19:17:16] - ERROR - error in GetChart while getting chart data from db: cannot transform type primitive.ObjectID to a BSON Document: WriteObjectID can only write while positioned on a Element or Value but is positioned on a TopLevel
+
+[2022-03-04 19:18:08] - ERROR - error in GetChart while getting chart data from db: cannot transform type primitive.ObjectID to a BSON Document: WriteObjectID can only write while positioned on a Element or Value but is positioned on a TopLevel
+

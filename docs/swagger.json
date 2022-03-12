@@ -1,0 +1,1319 @@
+{
+    "schemes": [
+        "https",
+        "http"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "Economicus 메인 서버",
+        "title": "Economicus Main Server",
+        "termsOfService": "https://www.economicus.kr/",
+        "contact": {
+            "name": "API Support",
+            "url": "http://www.swagger.io/support",
+            "email": "support@swagger.io"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/v1",
+    "paths": {
+        "/lab/data/{quant_id}": {
+            "get": {
+                "description": "실험실에서 모델을 체크할 때, 모델의 차트 데이터와 옵션 정보를 반환",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "quant"
+                ],
+                "summary": "Return chart and option data",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer {access_token}",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "QuantID to get data",
+                        "name": "quant_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data of a quant",
+                        "schema": {
+                            "$ref": "#/definitions/response.LabData"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not found error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    }
+                }
+            }
+        },
+        "/lab/list": {
+            "get": {
+                "description": "실험실에 들어갈 때, 유저가 실험실에서 테스트하던 모델들 반환",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "quant"
+                ],
+                "summary": "Return a list of user's quants",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer {access_token}",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Quant list",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/response.LabQuant"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not found error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post": {
+                "description": "이메일, 비밀번호로 로그인하기",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Local login",
+                "parameters": [
+                    {
+                        "description": "User login email",
+                        "name": "email",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "User login password",
+                        "name": "password",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/jwt.Token"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not found error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    }
+                }
+            }
+        },
+        "/quants": {
+            "get": {
+                "description": "메인 화면에서 사용될 퀀트 모델들 반환, 개선 필요",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "quant"
+                ],
+                "summary": "Return a list of quant models",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer {access_token}",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "number of page",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "number of elements",
+                        "name": "per_page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "default": "\"\"",
+                        "description": "fields for order",
+                        "name": "order",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "default": "\"\"",
+                        "description": "keyword for query",
+                        "name": "keyword",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of quants",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.Quant"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not found error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    }
+                }
+            }
+        },
+        "/quants/quant": {
+            "post": {
+                "description": "실험실에서 모델 만들기를 눌렀을 때, 모델 생성",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "quant"
+                ],
+                "summary": "Create a quant model",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer {access_token}",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Quant option data",
+                        "name": "quant",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.QuantOption"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": ""
+                    },
+                    "400": {
+                        "description": "Bad request error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not found error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    }
+                }
+            }
+        },
+        "/quants/quant-option/{quant_id}": {
+            "patch": {
+                "description": "퀀트 옵션을 변경하고자 할 경우 사용",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "quant"
+                ],
+                "summary": "Update a quant option",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer {access_token}",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Quant option data",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.EditQuantOptionReq"
+                        }
+                    },
+                    {
+                        "type": "integer",
+                        "description": "QuantID to update",
+                        "name": "quant_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    },
+                    "400": {
+                        "description": "Bad request error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not found error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    }
+                }
+            }
+        },
+        "/quants/quant/{quant_id}": {
+            "get": {
+                "description": "모델 상세페이지에서 사용될 퀀트 모델 반환, 개선 필요",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "quant"
+                ],
+                "summary": "Return a quant model",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer {access_token}",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "ID of a quant",
+                        "name": "quant_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A quant",
+                        "schema": {
+                            "$ref": "#/definitions/model.Quant"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not found error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "퀀트 모델을 제거할 경우 사용",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "quant"
+                ],
+                "summary": "Delete a quant model",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer {access_token}",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Quant ID to delete",
+                        "name": "quant_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    },
+                    "400": {
+                        "description": "Bad request error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not found error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "description": "모델 저장버튼(activate)을 누르거나, 모델 설명을 변경하고자 할 경우 사용",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "quant"
+                ],
+                "summary": "Update a quant model",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer {access_token}",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "ID of a quant",
+                        "name": "quant_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Quant data",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.EditQuantReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    },
+                    "400": {
+                        "description": "Bad request error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not found error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    }
+                }
+            }
+        },
+        "/refresh-token": {
+            "post": {
+                "description": "Access token 기간 만료시, Refresh token을 사용하여 jwt 토큰 재발급",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Refresh jwt token",
+                "parameters": [
+                    {
+                        "description": "Refresh token",
+                        "name": "refresh_token",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "refreshed access token",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not found error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    }
+                }
+            }
+        },
+        "/register": {
+            "post": {
+                "description": "이메일, 비밀번호로 유저 회원가입",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "Register a user",
+                "parameters": [
+                    {
+                        "description": "A user information",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.RegisterReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": ""
+                    },
+                    "400": {
+                        "description": "Bad request error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not found error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    }
+                }
+            }
+        },
+        "/users": {
+            "get": {
+                "description": "이메일, 비밀번호로 유저 회원가입",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "Return all users",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer {access_token}",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "A user information",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.RegisterReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": ""
+                    },
+                    "400": {
+                        "description": "Bad request error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not found error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/profile/{user_id}": {
+            "get": {
+                "description": "프로필 화면에서 유저의 정보 및 보유한 퀀트 모델을 반환",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "Return user's profile and quants",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer {access_token}",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "User id to get profile",
+                        "name": "user_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Profile response",
+                        "schema": {
+                            "$ref": "#/definitions/response.ProfileResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not found error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "handler.httpError": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "Some error message"
+                }
+            }
+        },
+        "jwt.Token": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "type": "string"
+                },
+                "refresh_token": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.Quant": {
+            "type": "object",
+            "properties": {
+                "annual_average_return": {
+                    "type": "number",
+                    "example": 16
+                },
+                "cumulative_return": {
+                    "type": "number",
+                    "example": 128.2
+                },
+                "description": {
+                    "type": "string",
+                    "example": "quant model description"
+                },
+                "holdings_count": {
+                    "type": "integer",
+                    "example": 22
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "max_loss_rate": {
+                    "type": "number",
+                    "example": -29.11
+                },
+                "name": {
+                    "type": "string",
+                    "example": "quant model name"
+                },
+                "user_id": {
+                    "type": "integer"
+                },
+                "winning_percentage": {
+                    "type": "number",
+                    "example": 66.66
+                }
+            }
+        },
+        "model.QuantOption": {
+            "type": "object",
+            "properties": {
+                "de_ratio": {
+                    "$ref": "#/definitions/quant.DoublePair"
+                },
+                "dividend_payout_ratio": {
+                    "$ref": "#/definitions/quant.DoublePair"
+                },
+                "dividend_yield": {
+                    "$ref": "#/definitions/quant.DoublePair"
+                },
+                "end_date": {
+                    "type": "string",
+                    "example": "2021-03-31T00:00:000.Z"
+                },
+                "financing": {
+                    "$ref": "#/definitions/quant.DoublePair"
+                },
+                "investing": {
+                    "$ref": "#/definitions/quant.DoublePair"
+                },
+                "main_sectors": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "market_cap": {
+                    "$ref": "#/definitions/quant.IntPair"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "net_profit": {
+                    "$ref": "#/definitions/quant.IntPair"
+                },
+                "net_profit_rate": {
+                    "$ref": "#/definitions/quant.DoublePair"
+                },
+                "net_revenue": {
+                    "$ref": "#/definitions/quant.IntPair"
+                },
+                "net_revenue_rate": {
+                    "$ref": "#/definitions/quant.DoublePair"
+                },
+                "operating": {
+                    "$ref": "#/definitions/quant.DoublePair"
+                },
+                "pbr": {
+                    "$ref": "#/definitions/quant.DoublePair"
+                },
+                "pcr": {
+                    "$ref": "#/definitions/quant.DoublePair"
+                },
+                "per": {
+                    "$ref": "#/definitions/quant.DoublePair"
+                },
+                "psr": {
+                    "$ref": "#/definitions/quant.DoublePair"
+                },
+                "quant_id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "roa": {
+                    "$ref": "#/definitions/quant.DoublePair"
+                },
+                "roe": {
+                    "$ref": "#/definitions/quant.DoublePair"
+                },
+                "start_date": {
+                    "type": "string",
+                    "example": "2016-03-31T00:00:000.Z"
+                }
+            }
+        },
+        "quant.DoublePair": {
+            "type": "object",
+            "properties": {
+                "max": {
+                    "type": "number",
+                    "example": -100.01
+                },
+                "min": {
+                    "type": "number",
+                    "example": 100.01
+                }
+            }
+        },
+        "quant.IntPair": {
+            "type": "object",
+            "properties": {
+                "max": {
+                    "type": "integer",
+                    "example": -10000
+                },
+                "min": {
+                    "type": "integer",
+                    "example": 1000000
+                }
+            }
+        },
+        "request.EditQuantOptionReq": {
+            "type": "object",
+            "properties": {
+                "de_ratio": {
+                    "$ref": "#/definitions/quant.DoublePair"
+                },
+                "dividend_payout_ratio": {
+                    "$ref": "#/definitions/quant.DoublePair"
+                },
+                "dividend_yield": {
+                    "$ref": "#/definitions/quant.DoublePair"
+                },
+                "end_date": {
+                    "type": "string",
+                    "example": "2021-03-31T00:00:000.Z"
+                },
+                "financing": {
+                    "$ref": "#/definitions/quant.DoublePair"
+                },
+                "investing": {
+                    "$ref": "#/definitions/quant.DoublePair"
+                },
+                "main_sectors": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "market_cap": {
+                    "$ref": "#/definitions/quant.IntPair"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "net_profit": {
+                    "$ref": "#/definitions/quant.IntPair"
+                },
+                "net_profit_rate": {
+                    "$ref": "#/definitions/quant.DoublePair"
+                },
+                "net_revenue": {
+                    "$ref": "#/definitions/quant.IntPair"
+                },
+                "net_revenue_rate": {
+                    "$ref": "#/definitions/quant.DoublePair"
+                },
+                "operating": {
+                    "$ref": "#/definitions/quant.DoublePair"
+                },
+                "pbr": {
+                    "$ref": "#/definitions/quant.DoublePair"
+                },
+                "pcr": {
+                    "$ref": "#/definitions/quant.DoublePair"
+                },
+                "per": {
+                    "$ref": "#/definitions/quant.DoublePair"
+                },
+                "psr": {
+                    "$ref": "#/definitions/quant.DoublePair"
+                },
+                "quant_id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "roa": {
+                    "$ref": "#/definitions/quant.DoublePair"
+                },
+                "roe": {
+                    "$ref": "#/definitions/quant.DoublePair"
+                },
+                "start_date": {
+                    "type": "string",
+                    "example": "2016-03-31T00:00:000.Z"
+                }
+            }
+        },
+        "request.EditQuantReq": {
+            "type": "object",
+            "properties": {
+                "active": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "description": {
+                    "type": "string",
+                    "example": "New model description"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "New model name"
+                }
+            }
+        },
+        "request.RegisterReq": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "example@economicus.kr"
+                },
+                "nickname": {
+                    "type": "string",
+                    "example": "user nickname"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "some password"
+                }
+            }
+        },
+        "response.ChartData": {
+            "type": "object",
+            "properties": {
+                "profit_rate_data": {
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    },
+                    "example": [
+                        8.31201046811529,
+                        15.13554790878776,
+                        -1.336521221573761,
+                        -1.42408166715555,
+                        10.420784591586559,
+                        8.305691643668455,
+                        17.68356243256443,
+                        9.407034979656027,
+                        -4.15162926200139,
+                        5.542443496088845,
+                        6.654446258518339
+                    ]
+                }
+            }
+        },
+        "response.LabData": {
+            "type": "object",
+            "properties": {
+                "chart": {
+                    "$ref": "#/definitions/response.ChartData"
+                },
+                "option": {
+                    "$ref": "#/definitions/model.QuantOption"
+                }
+            }
+        },
+        "response.LabQuant": {
+            "type": "object",
+            "properties": {
+                "annual_average_return": {
+                    "type": "number",
+                    "example": 16
+                },
+                "cumulative_return": {
+                    "type": "number",
+                    "example": 128.2
+                },
+                "holdings_count": {
+                    "type": "integer",
+                    "example": 22
+                },
+                "max_loss_rate": {
+                    "type": "number",
+                    "example": -29.11
+                },
+                "name": {
+                    "type": "string",
+                    "example": "model name"
+                },
+                "quant_id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "winning_percentage": {
+                    "type": "number",
+                    "example": 66.66
+                }
+            }
+        },
+        "response.ProfileQuantResponse": {
+            "type": "object",
+            "properties": {
+                "chart": {
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    },
+                    "example": [
+                        8.31201046811529,
+                        15.13554790878776,
+                        -1.336521221573761,
+                        -1.42408166715555,
+                        10.420784591586559,
+                        8.305691643668455,
+                        17.68356243256443,
+                        9.407034979656027,
+                        -4.15162926200139,
+                        5.542443496088845,
+                        6.654446258518339
+                    ]
+                },
+                "quant_id": {
+                    "type": "integer",
+                    "example": 5
+                }
+            }
+        },
+        "response.ProfileResponse": {
+            "type": "object",
+            "properties": {
+                "quant": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/response.ProfileQuantResponse"
+                    }
+                },
+                "user": {
+                    "$ref": "#/definitions/table.User"
+                }
+            }
+        },
+        "table.Location": {
+            "type": "object",
+            "properties": {
+                "city": {
+                    "type": "string"
+                },
+                "country": {
+                    "type": "string"
+                }
+            }
+        },
+        "table.Profile": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "intro_message": {
+                    "type": "string"
+                },
+                "location": {
+                    "$ref": "#/definitions/table.Location"
+                },
+                "nickname": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "profile_image": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
+                },
+                "user_url": {
+                    "type": "string"
+                }
+            }
+        },
+        "table.User": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "profile": {
+                    "$ref": "#/definitions/table.Profile"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "JWT": {
+            "type": "basic"
+        }
+    }
+}
