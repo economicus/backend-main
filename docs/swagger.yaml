@@ -51,7 +51,7 @@ definitions:
       dividend_yield:
         $ref: '#/definitions/quant.DoublePair'
       end_date:
-        example: 2021-03-31T00:00:000.Z
+        example: "2021-03-31T00:00:00.000Z"
         type: string
       financing:
         $ref: '#/definitions/quant.DoublePair'
@@ -91,7 +91,7 @@ definitions:
       roe:
         $ref: '#/definitions/quant.DoublePair'
       start_date:
-        example: 2016-03-31T00:00:000.Z
+        example: "2016-03-31T00:00:00.000Z"
         type: string
     type: object
   quant.DoublePair:
@@ -121,7 +121,7 @@ definitions:
       dividend_yield:
         $ref: '#/definitions/quant.DoublePair'
       end_date:
-        example: 2021-03-31T00:00:000.Z
+        example: "2021-03-31T00:00:00.000Z"
         type: string
       financing:
         $ref: '#/definitions/quant.DoublePair'
@@ -161,7 +161,7 @@ definitions:
       roe:
         $ref: '#/definitions/quant.DoublePair'
       start_date:
-        example: 2016-03-31T00:00:000.Z
+        example: "2016-03-31T00:00:00.000Z"
         type: string
     type: object
   request.EditQuantReq:
@@ -256,6 +256,12 @@ definitions:
         items:
           type: number
         type: array
+      description:
+        example: model description
+        type: string
+      name:
+        example: model name
+        type: string
       quant_id:
         example: 5
         type: integer

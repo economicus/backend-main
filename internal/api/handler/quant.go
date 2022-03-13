@@ -66,7 +66,7 @@ func (h *QuantHandler) GetAllQuants(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        Authorization  header    string       true  "Bearer {access_token}"
-// @Param        quant_id       path      uint         true  "ID of a quant"
+// @Param        quant_id       path    uint                  true  "ID of a quant"
 // @Success      200            {object}  model.Quant  "A quant"
 // @Failure      400            {object}  httpError    "Bad request error"
 // @Failure      401            {object}  httpError    "Unauthorized error"

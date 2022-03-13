@@ -952,7 +952,7 @@ const docTemplate = `{
                 },
                 "end_date": {
                     "type": "string",
-                    "example": "2021-03-31T00:00:000.Z"
+                    "example": "2021-03-31T00:00:00.000Z"
                 },
                 "financing": {
                     "$ref": "#/definitions/quant.DoublePair"
@@ -1011,7 +1011,7 @@ const docTemplate = `{
                 },
                 "start_date": {
                     "type": "string",
-                    "example": "2016-03-31T00:00:000.Z"
+                    "example": "2016-03-31T00:00:00.000Z"
                 }
             }
         },
@@ -1055,7 +1055,7 @@ const docTemplate = `{
                 },
                 "end_date": {
                     "type": "string",
-                    "example": "2021-03-31T00:00:000.Z"
+                    "example": "2021-03-31T00:00:00.000Z"
                 },
                 "financing": {
                     "$ref": "#/definitions/quant.DoublePair"
@@ -1114,7 +1114,7 @@ const docTemplate = `{
                 },
                 "start_date": {
                     "type": "string",
-                    "example": "2016-03-31T00:00:000.Z"
+                    "example": "2016-03-31T00:00:00.000Z"
                 }
             }
         },
@@ -1241,6 +1241,14 @@ const docTemplate = `{
                         5.542443496088845,
                         6.654446258518339
                     ]
+                },
+                "description": {
+                    "type": "string",
+                    "example": "model description"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "model name"
                 },
                 "quant_id": {
                     "type": "integer",

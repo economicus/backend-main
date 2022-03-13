@@ -31,11 +31,28 @@ func (s *QuantService) GetQuant(quantID uint) (*model.Quant, error) {
 }
 
 func (s *QuantService) GetUsersQuant(userID uint) ([]response.ProfileQuantResponse, error) {
+	var resp []response.ProfileQuantResponse
 	ids, err := s.repo.GetUserQuantIds(userID)
 	if err != nil {
 		return nil, err
 	}
-	return s.repo.GetChartByIds(ids)
+	charts, err := s.repo.GetChartByIds(ids)
+	if err != nil {
+		return nil, err
+	}
+
+	for i := range charts {
+		quant, err := s.repo.GetQuant(charts[i].QuantID)
+		if err != nil {
+			return nil, err
+		}
+		resp = append(resp, response.ProfileQuantResponse{
+			ProfileQuantChartResponse: charts[i],
+			Name:                      quant.Name,
+			Description:               quant.Description,
+		})
+	}
+	return resp, nil
 }
 
 func (s *QuantService) GetMyQuants(userID uint) (*model.Quants, error) {

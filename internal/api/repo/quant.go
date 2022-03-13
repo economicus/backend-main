@@ -85,8 +85,8 @@ func (repo *QuantRepo) GetChart(chartID string) (*response.ChartData, error) {
 	return &res, nil
 }
 
-func (repo *QuantRepo) GetChartByIds(chartIDs []string) ([]response.ProfileQuantResponse, error) {
-	var res []response.ProfileQuantResponse
+func (repo *QuantRepo) GetChartByIds(chartIDs []string) ([]response.ProfileQuantChartResponse, error) {
+	var res []response.ProfileQuantChartResponse
 	var ids []primitive.ObjectID
 
 	for _, v := range chartIDs {
