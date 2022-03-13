@@ -18,7 +18,7 @@ jobs:
         id: docker_meta
         uses: crazy-max/ghaction-docker-meta@v1
         with:
-          images: back/main
+          images: back-main
           tag-semver: |
             {{version}}
             {{major}}.{{minor}}
