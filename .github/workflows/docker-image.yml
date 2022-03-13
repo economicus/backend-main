@@ -27,4 +27,4 @@ jobs:
         run: docker build . --file Dockerfile --tag back/main:$(date +%s)
       -
         name: Push
-        run: docker push ${{secretes.DOCKERHUB_USERNAME}}/back-main
+        run: docker push ${{secrets.DOCKERHUB_USERNAME}}/back-main
