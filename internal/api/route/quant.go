@@ -22,5 +22,6 @@ func SetQuant(router *gin.RouterGroup, handler *handler.QuantHandler) {
 	{
 		lab.GET("/list", handler.GetLabList)
 		lab.GET("/data/:quant_id", handler.GetLabData)
+		lab.GET("/data/kospi", handler.GetKospiData)
 	}
 }

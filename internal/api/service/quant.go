@@ -4,6 +4,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"main/internal/api/repo"
 	g "main/internal/conf/grpc"
+	"main/internal/core/data"
 	"main/internal/core/model"
 	"main/internal/core/model/request"
 	"main/internal/core/model/response"
@@ -28,6 +29,10 @@ func (s *QuantService) GetAllQuants(userID uint, option *model.Query) (model.Qua
 
 func (s *QuantService) GetQuant(quantID uint) (*model.Quant, error) {
 	return s.repo.GetQuant(quantID)
+}
+
+func (s *QuantService) GetKospi() ([]float32, error) {
+	return data.FixedKD, nil
 }
 
 func (s *QuantService) GetUsersQuant(userID uint) ([]response.ProfileQuantResponse, error) {

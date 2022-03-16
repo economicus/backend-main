@@ -3,7 +3,6 @@ package handler
 import (
 	"github.com/gin-gonic/gin"
 	"main/internal/api/service"
-	"main/internal/core/data"
 	"main/internal/core/model"
 	"main/internal/core/model/request"
 	"net/http"
@@ -118,10 +117,7 @@ func (h *QuantHandler) GetLabList(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{
-		"quants": resp,
-		"kospi":  data.FixedKD,
-	})
+	ctx.JSON(http.StatusOK, resp)
 }
 
 // GetLabData godoc
@@ -130,13 +126,13 @@ func (h *QuantHandler) GetLabList(ctx *gin.Context) {
 // @Tags         quant
 // @Accept       json
 // @Produce      json
-// @Param        Authorization  header    string            true  "Bearer {access_token}"
+// @Param        Authorization  header    string     true  "Bearer {access_token}"
 // @Param        quant_id       path      uint              true  "QuantID to get data"
 // @Success      200            {object}  response.LabData  "Data of a quant"
-// @Failure      400            {object}  httpError         "Bad request error"
-// @Failure      401            {object}  httpError         "Unauthorized error"
-// @Failure      404            {object}  httpError         "Not found error"
-// @Failure      500            {object}  httpError         "Internal server error"
+// @Failure      400            {object}  httpError  "Bad request error"
+// @Failure      401            {object}  httpError  "Unauthorized error"
+// @Failure      404            {object}  httpError  "Not found error"
+// @Failure      500            {object}  httpError  "Internal server error"
 // @Router       /lab/data/{quant_id} [get]
 func (h *QuantHandler) GetLabData(ctx *gin.Context) {
 	var uri struct {
@@ -158,19 +154,43 @@ func (h *QuantHandler) GetLabData(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, resp)
 }
 
+// GetKospiData godoc
+// @Summary      Return kospi data
+// @Description  코스피 데이터 반환
+// @Tags         quant
+// @Accept       json
+// @Produce      json
+// @Param        Authorization  header    string            true  "Bearer {access_token}"
+// @Success      200            {object}  []float32  "Kospi data"
+// @Failure      400            {object}  httpError         "Bad request error"
+// @Failure      401            {object}  httpError         "Unauthorized error"
+// @Failure      404            {object}  httpError         "Not found error"
+// @Failure      500            {object}  httpError         "Internal server error"
+// @Router       /lab/data/kospi [get]
+func (h *QuantHandler) GetKospiData(ctx *gin.Context) {
+	kospi, err := h.service.GetKospi()
+
+	if err != nil {
+		sendInternalErr(ctx)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, kospi)
+}
+
 // CreateQuant godoc
 // @Summary      Create a quant model
 // @Description  실험실에서 모델 만들기를 눌렀을 때, 모델 생성
 // @Tags         quant
 // @Accept       json
 // @Produce      json
-// @Param        Authorization  header  string             true  "Bearer {access_token}"
-// @Param        quant          body    model.QuantOption  true  "Quant option data"  "desc"
-// @Success      201
-// @Failure      400  {object}  httpError  "Bad request error"
-// @Failure      401  {object}  httpError  "Unauthorized error"
-// @Failure      404  {object}  httpError  "Not found error"
-// @Failure      500  {object}  httpError  "Internal server error"
+// @Param        Authorization  header    string                  true  "Bearer {access_token}"
+// @Param        quant          body      model.QuantOption       true  "Quant option data"  "desc"
+// @Success      201            {object}  response.QuantResponse  "Quant creation result"
+// @Failure      400            {object}  httpError               "Bad request error"
+// @Failure      401            {object}  httpError               "Unauthorized error"
+// @Failure      404            {object}  httpError               "Not found error"
+// @Failure      500            {object}  httpError               "Internal server error"
 // @Router       /quants/quant [post]
 func (h *QuantHandler) CreateQuant(ctx *gin.Context) {
 	var req model.QuantOption

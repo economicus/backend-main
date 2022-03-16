@@ -275,6 +275,29 @@ definitions:
       user:
         $ref: '#/definitions/table.User'
     type: object
+  response.QuantResponse:
+    properties:
+      annual_average_return:
+        example: -2.21
+        type: number
+      chart_data:
+        $ref: '#/definitions/response.ChartData'
+      cumulative_return:
+        example: 15.95
+        type: number
+      holdings_count:
+        example: 7
+        type: integer
+      max_loss_rate:
+        example: -26.46
+        type: number
+      quant_id:
+        example: 5
+        type: integer
+      winning_percentage:
+        example: 45.45
+        type: number
+    type: object
   table.Location:
     properties:
       city:
@@ -362,6 +385,45 @@ paths:
           schema:
             $ref: '#/definitions/handler.httpError'
       summary: Return chart and option data
+      tags:
+      - quant
+  /lab/data/kospi:
+    get:
+      consumes:
+      - application/json
+      description: 코스피 데이터 반환
+      parameters:
+      - description: Bearer {access_token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Kospi data
+          schema:
+            items:
+              type: number
+            type: array
+        "400":
+          description: Bad request error
+          schema:
+            $ref: '#/definitions/handler.httpError'
+        "401":
+          description: Unauthorized error
+          schema:
+            $ref: '#/definitions/handler.httpError'
+        "404":
+          description: Not found error
+          schema:
+            $ref: '#/definitions/handler.httpError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/handler.httpError'
+      summary: Return kospi data
       tags:
       - quant
   /lab/list:
@@ -527,7 +589,9 @@ paths:
       - application/json
       responses:
         "201":
-          description: ""
+          description: Quant creation result
+          schema:
+            $ref: '#/definitions/response.QuantResponse'
         "400":
           description: Bad request error
           schema:

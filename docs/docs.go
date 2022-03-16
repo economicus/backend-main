@@ -25,6 +25,65 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/lab/data/kospi": {
+            "get": {
+                "description": "코스피 데이터 반환",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "quant"
+                ],
+                "summary": "Return kospi data",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer {access_token}",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Kospi data",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "number"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not found error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    }
+                }
+            }
+        },
         "/lab/data/{quant_id}": {
             "get": {
                 "description": "실험실에서 모델을 체크할 때, 모델의 차트 데이터와 옵션 정보를 반환",
@@ -334,7 +393,10 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "201": {
-                        "description": ""
+                        "description": "Quant creation result",
+                        "schema": {
+                            "$ref": "#/definitions/response.QuantResponse"
+                        }
                     },
                     "400": {
                         "description": "Bad request error",
@@ -1267,6 +1329,38 @@ const docTemplate = `{
                 },
                 "user": {
                     "$ref": "#/definitions/table.User"
+                }
+            }
+        },
+        "response.QuantResponse": {
+            "type": "object",
+            "properties": {
+                "annual_average_return": {
+                    "type": "number",
+                    "example": -2.21
+                },
+                "chart_data": {
+                    "$ref": "#/definitions/response.ChartData"
+                },
+                "cumulative_return": {
+                    "type": "number",
+                    "example": 15.95
+                },
+                "holdings_count": {
+                    "type": "integer",
+                    "example": 7
+                },
+                "max_loss_rate": {
+                    "type": "number",
+                    "example": -26.46
+                },
+                "quant_id": {
+                    "type": "integer",
+                    "example": 5
+                },
+                "winning_percentage": {
+                    "type": "number",
+                    "example": 45.45
                 }
             }
         },
