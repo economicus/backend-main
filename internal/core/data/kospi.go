@@ -35,13 +35,14 @@ func NewKospi() *Kospi {
 		Date:     make(map[time.Time]int),
 		IndexVal: []float32{},
 	}
+	lenOfRow := len(rows)
 
 	for i := range rows {
-		t, err := time.Parse(layout, rows[i][0])
+		t, err := time.Parse(layout, rows[lenOfRow-i-1][0])
 		if err != nil {
 			log.Panicf("error while parsing time: %v", err)
 		}
-		f, err := strconv.ParseFloat(rows[i][1], 32)
+		f, err := strconv.ParseFloat(rows[lenOfRow-i-1][1], 32)
 		if err != nil {
 			log.Panicf("error while parsing index value: %v", err)
 		}
@@ -49,5 +50,6 @@ func NewKospi() *Kospi {
 		k.IndexVal = append(k.IndexVal, float32(f))
 		FixedKD = append(FixedKD, float32(f))
 	}
+
 	return &k
 }
