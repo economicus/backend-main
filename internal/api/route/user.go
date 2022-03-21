@@ -14,6 +14,7 @@ func SetUser(router *gin.RouterGroup, handler *handler.UserHandler, mid *middlew
 		userRoute.GET("/user", handler.GetUser)
 		userRoute.DELETE("/user", handler.DeleteUser)
 
+		userRoute.GET("/profile", handler.GetUserProfile)
 		userRoute.GET("/profile/:user_id", handler.GetUserProfile)
 		userRoute.PATCH("/profile", handler.EditUserProfile)
 		userRoute.PUT("/profile-image", handler.UploadUserProfileImage)

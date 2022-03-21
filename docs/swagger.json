@@ -872,6 +872,62 @@
                 }
             }
         },
+        "/users/profile": {
+            "get": {
+                "description": "프로필 화면에서 유저 자신의 정보 및 보유한 퀀트 모델을 반환",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "Return user's profile and quants",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer {access_token}",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Profile response",
+                        "schema": {
+                            "$ref": "#/definitions/response.ProfileResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not found error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.httpError"
+                        }
+                    }
+                }
+            }
+        },
         "/users/profile/{user_id}": {
             "get": {
                 "description": "프로필 화면에서 유저의 정보 및 보유한 퀀트 모델을 반환",

@@ -60,10 +60,10 @@ func (h *UserHandler) Register(ctx *gin.Context) {
 // @Param        Authorization  header    string                    true  "Bearer {access_token}"
 // @Param        body           body    request.RegisterReq  true  "A user information"
 // @Success      201
-// @Failure      400  {object}  httpError  "Bad request error"
-// @Failure      401  {object}  httpError  "Unauthorized error"
-// @Failure      404  {object}  httpError  "Not found error"
-// @Failure      500  {object}  httpError  "Internal server error"
+// @Failure      400            {object}  httpError                 "Bad request error"
+// @Failure      401            {object}  httpError                 "Unauthorized error"
+// @Failure      404            {object}  httpError                 "Not found error"
+// @Failure      500            {object}  httpError                 "Internal server error"
 // @Router       /users [get]
 func (h *UserHandler) GetAllUsers(ctx *gin.Context) {
 	option := model.NewQuery()
@@ -112,7 +112,7 @@ func (h *UserHandler) GetUser(ctx *gin.Context) {
 // @Tags         user
 // @Accept       json
 // @Produce      json
-// @Param        Authorization  header  string               true  "Bearer {access_token}"
+// @Param        Authorization  header    string                    true  "Bearer {access_token}"
 // @Param        user_id        path      uint                      true  "User id to get profile"
 // @Success      200            {object}  response.ProfileResponse  "Profile response"
 // @Failure      400  {object}  httpError  "Bad request error"
@@ -138,6 +138,40 @@ func (h *UserHandler) GetUserProfile(ctx *gin.Context) {
 
 	if uri.UserID != user.ID {
 		sendErr(ctx, e.ErrPermissionDenied)
+		return
+	}
+
+	quant, err := h.quantService.GetUsersQuant(user.ID)
+	if err != nil {
+		sendErr(ctx, err)
+		return
+	}
+
+	res := response.ProfileResponse{
+		User:  *user,
+		Quant: quant,
+	}
+
+	ctx.JSON(http.StatusOK, res)
+}
+
+// GetUserOwnProfile godoc
+// @Summary      Return user's profile and quants
+// @Description  프로필 화면에서 유저 자신의 정보 및 보유한 퀀트 모델을 반환
+// @Tags         user
+// @Accept       json
+// @Produce      json
+// @Param        Authorization  header  string               true  "Bearer {access_token}"
+// @Success      200            {object}  response.ProfileResponse  "Profile response"
+// @Failure      400  {object}  httpError  "Bad request error"
+// @Failure      401  {object}  httpError  "Unauthorized error"
+// @Failure      404  {object}  httpError  "Not found error"
+// @Failure      500  {object}  httpError  "Internal server error"
+// @Router       /users/profile  [get]
+func (h *UserHandler) GetUserOwnProfile(ctx *gin.Context) {
+	user, err := getUserFromContext(ctx)
+	if err != nil {
+		sendErr(ctx, err)
 		return
 	}
 
