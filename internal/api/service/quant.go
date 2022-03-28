@@ -36,10 +36,13 @@ func (s *QuantService) GetKospi() ([]float32, error) {
 }
 
 func (s *QuantService) GetUsersQuant(userID uint) ([]response.ProfileQuantResponse, error) {
-	var resp []response.ProfileQuantResponse
+	resp := []response.ProfileQuantResponse{}
 	ids, err := s.repo.GetUserQuantIds(userID)
 	if err != nil {
 		return nil, err
+	}
+	if len(ids) == 0 {
+		return resp, nil
 	}
 	charts, err := s.repo.GetChartByIds(ids)
 	if err != nil {
